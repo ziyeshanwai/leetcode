@@ -11,8 +11,11 @@ struct ListNode {
     ListNode(int x) : val(x), next(nullptr) {}
     ListNode(int x, ListNode *next) : val(x), next(next) {}
  };
-
+/*
+ * 先将每个链表的数字变为正确的数字然后求和再变回链表的方式是错误的
+*/
 class Solution {
+
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
         int64_t input_0 = 0;
@@ -68,7 +71,89 @@ public:
     }
 };
 
-void build_listnode(vector<unsigned int>& vector_array, ListNode& list_node)
+/*
+ * 直接使用加法的法则方式进行相加
+ */
+class Solution_1 {
+
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+
+        ListNode* resu = new ListNode(0);
+        int mod;
+        int step;
+        ListNode* move_ptr;
+        move_ptr = resu;
+        int i = 0;
+        while(l1 || l2)
+        {
+            int tmp = 0;
+            if(l1 == nullptr && l2 != nullptr)
+            {
+                tmp = l2->val;
+            }
+            if(l1 != nullptr && l2 == nullptr)
+            {
+                tmp = l1->val;
+            }
+            if(l1 != nullptr && l2 != nullptr)
+            {
+                tmp = l1->val + l2->val;
+            }
+           if(i==0)
+           {
+               if(tmp>=10)
+               {
+                   mod = tmp % 10;
+                   step = 1;
+               }
+               else
+               {
+                   mod = tmp;
+                   step = 0;
+               }
+               resu->val = mod;
+           }
+           else
+           {
+               if((tmp+step) >= 10)
+               {
+                   mod = (tmp+step) % 10;
+                   move_ptr->next = new ListNode(mod);
+                   move_ptr = move_ptr->next;
+                   step = 1;
+               }
+               else
+               {
+                   mod = tmp + step;
+                   move_ptr->next = new ListNode(mod);
+                   move_ptr = move_ptr->next;
+                   step = 0;
+               }
+
+           }
+           if(l1 != nullptr)
+           {
+               l1 = l1->next;
+           }
+           if(l2 != nullptr)
+           {
+               l2 = l2->next;
+           }
+
+           i += 1;
+        }
+        if(step==1)
+        {
+            move_ptr->next = new ListNode(1);
+        }
+        return resu;
+
+    }
+};
+
+
+void build_listnode(vector<int>& vector_array, ListNode& list_node)
 {
     ListNode* list_copy;
     list_node = ListNode(vector_array[0]);
@@ -84,18 +169,20 @@ int main()
 {
    vector<int> l1 = vector<int>{9};
    vector<int> l2 = vector<int>{1,9,9,9,9,9,9,9,9,9};
-   Solution* su = new Solution();
+   Solution_1* su = new Solution_1();
    ListNode list_1, list_2;
    ListNode* ptr;
    build_listnode(l1, list_1);
    build_listnode(l2, list_2);
    ptr = su->addTwoNumbers(&list_1, &list_2);
-   while(ptr->next)
+   int i = 0;
+   while(ptr)
    {
-       cout<<ptr->val<<endl;
+       cout<< i << " "<< ptr->val<<endl;
        ptr=ptr->next;
+       i += 1;
    }
-   cout<< ptr->val << endl;
+//   cout<< ptr->val << endl;
 //   cout<< ptr->next->val<<endl;
 //   cout<< ptr->next->next->val<<endl;
 }
