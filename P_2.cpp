@@ -165,7 +165,7 @@ void build_listnode(vector<int>& vector_array, ListNode& list_node)
     }
 }
 
-int main()
+int main2()
 {
    vector<int> l1 = vector<int>{9};
    vector<int> l2 = vector<int>{1,9,9,9,9,9,9,9,9,9};
