@@ -68,7 +68,7 @@ public:
     }
 };
 
-int main()
+int main6()
 {
     Solution so = Solution();
     string s = so.convert("AB", 1);
